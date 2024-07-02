@@ -6,7 +6,7 @@ class Road{
         this.left=x-width/2
         this.right=x+width/2
 
-        const largenumber=93423423;
+        const largenumber=923423;
         this.top= -largenumber;
         this.bottom= largenumber;
     }
