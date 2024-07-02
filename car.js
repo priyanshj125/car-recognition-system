@@ -11,6 +11,7 @@ class Car{
         this.angle=0;
 
 
+        this.sensor=new Sensor(this);
         this.controls=new controls();
     }
     
@@ -21,7 +22,7 @@ class Car{
         if (this.controls.reverse) {
             this.speed -= this.acceleration; // Decrease speed when reversing
         }
-    
+        
         if (this.speed > this.maxspeed) {
             this.speed = this.maxspeed;
         }
@@ -49,6 +50,7 @@ class Car{
         }
         this.x -= Math.sin(this.angle)*this.speed
         this.y -= Math.cos(this.angle)*this.speed
+        this.sensor.update();
     }
     draw(ctx){
         ctx.save();
@@ -61,8 +63,10 @@ class Car{
         this.width,
         this.height
       );
+        // this.sensor.draw(ctx);
         ctx.fill();
         ctx.restore();
+        this.sensor.draw(ctx);
 
 }
 }
