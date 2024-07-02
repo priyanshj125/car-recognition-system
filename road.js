@@ -9,45 +9,47 @@ class Road{
         const largenumber=93423423;
         this.top= -largenumber;
         this.bottom= largenumber;
+
+     const topleft={x:this.left,y:this.top}
+     const topright={x:this.right,y:this.top}
+     const bottomright={x:this.right,y:this.bottom}
+     const bottomleft={x:this.left,y:this.bottom}
+      this.borders=[
+            [topleft,topright],
+            [bottomleft,bottomright]
+        ]
+        
     }
     
-    
     getlanecenter(index) {
-        const options = {
-            points: myPoints, //vec3 array,
-            updatable: true
-        }
-        let dashedlines = BABYLON.MeshBuilder.CreateDashedLines("dashedlines", options, scene);  //scene is optional and defaults to the current scene
-        
-        // Update
-        options.points[0].x +=6; 
-        options.instance = lines;
-        lines = BABYLON.MeshBuilder.CreateDashedLines("dashedlines", options); //No scene parameter when using instance
         const lanewidth=this.width/this.lanecount;
         return this.left+ lanewidth/2 + index*lanewidth ;
 
     }
-    draw(ctx){
-        ctx.linewidth=9;
-        ctx.strokeStyle="black";
-        for (let i = 0; i <= this.lanecount; i++) {
+    draw(ctx) {
+        ctx.lineWidth = 9;
+        ctx.strokeStyle = "white";
 
-           const x=lerp(this.left,this.right,i/this.lanecount );
+        // Adjust this value if needed
+        ctx.lineDashOffset = 35;
 
-        if (i > 0 && i < this.lanecount) {
-            ctx.setLineDash([5, 15]);
-        } else {
-            ctx.setLineDash([]);
+        for (let i = 1; i <= this.lanecount-1; i++) {
+            const x = lerp(this.left, this.right, i / this.lanecount);
+
+            ctx.beginPath();
+            ctx.setLineDash([30, 60]);
+            ctx.moveTo(x, this.top);
+            ctx.lineTo(x, this.bottom);
+            ctx.stroke();
         }
+        ctx.setLineDash([43,4]);
+        this.borders.forEach(function (border) {
+            ctx.beginPath();
+            ctx.moveTo(border[0].x, border[0].y);
+            ctx.lineTo(border[1].x, border[1].y);
+            ctx.stroke();
+        });
 
-
-        ctx.beginPath();
-        ctx.moveTo(x,this.top)
-        ctx.lineTo(x,this.bottom)
-        ctx.stroke();
-        
     }
-
-}
 }
 
